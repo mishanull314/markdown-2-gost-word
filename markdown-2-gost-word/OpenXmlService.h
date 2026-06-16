@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
 int OpenXmlService_IsAvailable();
 int OpenXmlService_CreateDocument(const wchar_t* outputPath);
 int OpenXmlService_GetLastError(wchar_t* buffer, int bufferLength);
+
+int SaveTitleInDocx(std::string textForParsing);

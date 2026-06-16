@@ -104,6 +104,49 @@ namespace
     }
 }
 
+int SaveTitleInDocx(std::string textForParsing)
+{
+    WordprocessingDocument^ document = WordprocessingDocument::Create(
+        "./output.docx",
+        WordprocessingDocumentType::Document);
+
+    try
+    {
+        MainDocumentPart^ mainPart = document->AddMainDocumentPart();
+
+        String^ str = gcnew String(textForParsing.c_str());
+        DocumentFormat::OpenXml::Wordprocessing::Text^ text =
+            gcnew DocumentFormat::OpenXml::Wordprocessing::Text(str);
+        Run^ run = gcnew Run();
+        Paragraph^ paragraph = gcnew Paragraph();
+        ParagraphProperties^ pPr = gcnew ParagraphProperties();
+        Indentation^ ident = gcnew Indentation();
+        ident->FirstLine = gcnew StringValue("710");
+        // ”станавливаем отступ первой строки (720 твипов = 1.25 см)
+        pPr->AppendChild(ident);
+
+        paragraph->PrependChild(pPr);
+
+        Body^ body = gcnew Body();
+        Document^ wordDocument = gcnew Document();
+
+        run->AppendChild(text);
+        paragraph->AppendChild(run);
+        body->AppendChild(paragraph);
+        wordDocument->AppendChild(body);
+
+        mainPart->Document = wordDocument;
+
+        mainPart->Document->Save();
+    }
+    finally
+    {
+        delete document;
+    }
+
+    return OPENXML_API_OK;
+}
+
 int OpenXmlService_IsAvailable()
 {
     OpenXmlAssemblyResolver::Install();

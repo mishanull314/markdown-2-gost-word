@@ -44,6 +44,24 @@ namespace
     }
 }
 
+enum ParsingMdType
+{
+	Title,
+    MarkedList,
+    NumList,
+    Code
+};
+
+void Parsing(ParsingMdType type, std::string text)
+{
+	switch (type)
+	{
+	case Title:
+        std::string finalText = text.substr(2);
+        SaveTitleInDocx(finalText);
+	}
+}
+
 int main()
 {
     bool isRunning = true;
@@ -57,7 +75,7 @@ int main()
 
         if (command == L"1")
         {
-            CreateTestDocument();
+            Parsing(ParsingMdType::Title, "# My title");
         }
         else if (command == L"0")
         {
